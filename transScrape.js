@@ -12,7 +12,9 @@ var cheerio = require("cheerio"),
 var url = "https://en.wikipedia.org/wiki/List_of_transgender_characters_in_film_and_television";
 
 var productions = {
-  title: []
+  title: [],
+  description: [],
+  link: []
 }
 
 request(url, function(err, response, body){
