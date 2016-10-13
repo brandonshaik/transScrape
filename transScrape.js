@@ -8,45 +8,6 @@ var cheerio = require("cheerio"),
 
   wiki = db.import(__dirname + "/wiki");
 
-// wiki.findAll({
-//   where:{
-//     id: 1
-//   }
-// }).then(function(row){
-//   console.log(row.dataValues);
-// });
-
-// wiki.findOrCreate({
-//   where:{
-//     id: 1
-//   }
-// }, defaults: {
-
-//   headline: "test hed",
-//   lede: "test lede",
-//   subhed: "test subhed",
-//   sublede: "test sublede"
-// }).spread(function(row, created){
-
-// });
-
-// wiki.update({
-//   headline: "Did it update?"
-// }, {
-//   where:{
-//     id: 1
-//   }
-// }).then(function(row){
-//   console.log(row);
-// });
-
-// wiki.create({
-//   title: "this is a new row",
-//   year: "TestYEAR",
-//   description: "TESTDESCRIPTION",
-//   link: "TESTLINK"
-// });
-
 //set the URL of the page I want to scrape
 var url = "https://en.wikipedia.org/wiki/List_of_transgender_characters_in_film_and_television";
 
