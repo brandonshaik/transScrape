@@ -11,11 +11,11 @@ var cheerio = require("cheerio"),
 //set the URL of the page I want to scrape
 var url = "https://en.wikipedia.org/wiki/List_of_transgender_characters_in_film_and_television";
 
-var productions = {
-  title: [],
-  description: [],
-  link: []
-}
+// var productions = [
+//   title: "",
+//   description: "",
+//   link: "[]"
+// ]
 
 request(url, function(err, response, body){
  if(err) throw err;
@@ -31,13 +31,22 @@ request(url, function(err, response, body){
     // console.log(title);
    })
 
+   // scrapes the year
+    $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
+    var ul =$(this),
+    year = ul.text().match(/\(\d+\)/);
+
+    // console.log(year);
+   })
+
   // scrapes the description
     $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
     var ul =$(this),
-    title = ul.find("a:nth-child(1)").text();
+    description = ul.text().match(/\:.+/);
 
     console.log(description);
    })
+
   // scrapes the link
 
     $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
