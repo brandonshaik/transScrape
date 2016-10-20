@@ -8,59 +8,83 @@ var cheerio = require("cheerio"),
 
   wiki = db.import(__dirname + "/wiki");
 
-//set the URL of the page I want to scrape
-var url = "https://en.wikipedia.org/wiki/List_of_transgender_characters_in_film_and_television";
+    //set the URL of the page I want to scrape
+    var url = "https://en.wikipedia.org/wiki/List_of_transgender_characters_in_film_and_television";
 
-  var productions = {
-    titles: [],
-    years: [],
-    descriptions: [],
-    links: []
-  };
+      var productions = {
+        titles: [],
+        years: [],
+        descriptions: [],
+        links: []
+      };
 
-request(url, function(err, response, body){
- if(err) throw err;
+    request(url, function(err, response, body){
+     if(err) throw err;
 
- $ = cheerio.load(body);
+     $ = cheerio.load(body);
 
-  // scrapes the title
+      // scrapes the title
+      $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
+        var prod = $(this),
+            production = {
+              title: prod.find("a:nth-child(1)").text(),
+              year: "",
+              description: "",
+              link: prod.find("a:nth-child(1)").attr("href")
+            };
 
-   $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
-    var ul =$(this),
-    title = ul.find("a:nth-child(1)").text();
+            year = prod.text().match(/\(\d+\)/);
+            description = prod.text().match(/\:.+/)
 
-    productions.titles.push(title);
-    // console.log(title);
-   })
+            if(year){
+              production.year = year[0];
+            }
 
-   // scrapes the year
-    $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
-    var ul =$(this),
-    year = ul.text().match(/\(\d+\)/);
+            if(description){
+              production.description = description[0];
+            }
 
-    productions.years.push(year);
-    // console.log(year);
-   })
+            wiki.findOrCreate({where:{ link: production.link }, defaults: production});
 
-  // scrapes the description
-    $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
-    var ul =$(this),
-    description = ul.text().match(/\:.+/);
+      })
+    });
 
-    productions.descriptions.push(description);
-    // console.log(description);
-   })
+    //    $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
+    //     var ul =$(this),
+    //     title = ul.find("a:nth-child(1)").text();
 
-  // scrapes the link
+    //     productions.titles.push(title);
+    //     // console.log(title);
+    //    })
 
-    $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
-    var ul =$(this),
-    link = ul.find("a:nth-child(1)").attr("href");
+    //    // scrapes the year
+    //     $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
+    //     var ul =$(this),
+    //     year = ul.text().match(/\(\d+\)/);
 
-    productions.links.push(link);
-    // console.log(link);
-   })
+    //     productions.years.push(year);
+    //     // console.log(year);
+    //    })
 
-});
+    //   // scrapes the description
+    //     $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
+    //     var ul =$(this),
+    //     description = ul.text().match(/\:.+/);
 
-console.log(productions);
+    //     productions.descriptions.push(description);
+    //     // console.log(description);
+    //    })
+
+    //   // scrapes the link
+
+    //     $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
+    //     var ul =$(this),
+    //     link = ul.find("a:nth-child(1)").attr("href");
+
+    //     productions.links.push(link);
+    //     // console.log(link);
+    //    })
+
+    // });
+
+
