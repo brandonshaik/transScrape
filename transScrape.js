@@ -11,11 +11,12 @@ var cheerio = require("cheerio"),
 //set the URL of the page I want to scrape
 var url = "https://en.wikipedia.org/wiki/List_of_transgender_characters_in_film_and_television";
 
-// var productions = [
-//   title: "",
-//   description: "",
-//   link: "[]"
-// ]
+  var productions = {
+    titles: [],
+    years: [],
+    descriptions: [],
+    links: []
+  };
 
 request(url, function(err, response, body){
  if(err) throw err;
@@ -28,6 +29,7 @@ request(url, function(err, response, body){
     var ul =$(this),
     title = ul.find("a:nth-child(1)").text();
 
+    productions.titles.push(title);
     // console.log(title);
    })
 
@@ -36,6 +38,7 @@ request(url, function(err, response, body){
     var ul =$(this),
     year = ul.text().match(/\(\d+\)/);
 
+    productions.years.push(year);
     // console.log(year);
    })
 
@@ -44,7 +47,8 @@ request(url, function(err, response, body){
     var ul =$(this),
     description = ul.text().match(/\:.+/);
 
-    console.log(description);
+    productions.descriptions.push(description);
+    // console.log(description);
    })
 
   // scrapes the link
@@ -53,7 +57,10 @@ request(url, function(err, response, body){
     var ul =$(this),
     link = ul.find("a:nth-child(1)").attr("href");
 
+    productions.links.push(link);
     // console.log(link);
    })
 
 });
+
+console.log(productions);
