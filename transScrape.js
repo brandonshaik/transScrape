@@ -15,7 +15,7 @@ var cheerio = require("cheerio"),
         titles: [],
         years: [],
         descriptions: [],
-        links: []
+        link: []
       };
 
     request(url, function(err, response, body){
@@ -34,57 +34,18 @@ var cheerio = require("cheerio"),
             };
 
             year = prod.text().match(/\(\d+\)/);
-            description = prod.text().match(/\:.+/)
+            description = prod.text().match(/(\:?)(.+)/g);
 
             if(year){
-              production.year = year[0];
+              production.year  = year[0];
             }
 
             if(description){
               production.description = description[0];
             }
 
+
             wiki.findOrCreate({where:{ link: production.link }, defaults: production});
 
       })
     });
-
-    //    $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
-    //     var ul =$(this),
-    //     title = ul.find("a:nth-child(1)").text();
-
-    //     productions.titles.push(title);
-    //     // console.log(title);
-    //    })
-
-    //    // scrapes the year
-    //     $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
-    //     var ul =$(this),
-    //     year = ul.text().match(/\(\d+\)/);
-
-    //     productions.years.push(year);
-    //     // console.log(year);
-    //    })
-
-    //   // scrapes the description
-    //     $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
-    //     var ul =$(this),
-    //     description = ul.text().match(/\:.+/);
-
-    //     productions.descriptions.push(description);
-    //     // console.log(description);
-    //    })
-
-    //   // scrapes the link
-
-    //     $("div#mw-content-text.mw-content-ltr > ul > li").each(function(){
-    //     var ul =$(this),
-    //     link = ul.find("a:nth-child(1)").attr("href");
-
-    //     productions.links.push(link);
-    //     // console.log(link);
-    //    })
-
-    // });
-
-
