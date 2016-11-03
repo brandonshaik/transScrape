@@ -11,13 +11,6 @@ var cheerio = require("cheerio"),
     //set the URL of the page I want to scrape
     var url = "https://en.wikipedia.org/wiki/List_of_transgender_characters_in_film_and_television";
 
-      var productions = {
-        titles: [],
-        years: [],
-        descriptions: [],
-        link: []
-      };
-
     request(url, function(err, response, body){
      if(err) throw err;
 
