@@ -27,7 +27,7 @@ var cheerio = require("cheerio"),
             };
 
             year = prod.text().match(/\(\d+\)/);
-            description = prod.text().match(/(\:?)(.+)/g);
+            description = prod.text().match(/\:(.+)/);
 
             if(year){
               production.year  = year[0];
